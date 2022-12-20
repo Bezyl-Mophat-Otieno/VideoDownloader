@@ -1,7 +1,7 @@
 body{
     box-sizing: border-box;
-    background-color: rgb(12, 161, 111);
-    display: flex;
+    background-color: #058d15;
+        display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
