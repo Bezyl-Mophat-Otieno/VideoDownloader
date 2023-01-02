@@ -10,6 +10,7 @@ function App() {
 useEffect(() => {
   setTimeout(()=>{
 setDelay(true)
+
   },1000)
  
 }, []);

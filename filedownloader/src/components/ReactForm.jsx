@@ -2,9 +2,10 @@ import React from 'react'
 import { useState } from 'react'
 function ReactForm() {
   const [urlProvided, setUrlProvided] = useState(false)
+  const [btnText , setBtnTxt] = useState("Download File")
   const fileInput = document.querySelector("input");
   const button = document.querySelector("button");
-  
+  const [inputValue , setInputValue] = useState("")
   
  const handleChange = ()=>{
 setUrlProvided((prevUrlState)=>{
@@ -14,16 +15,26 @@ setUrlProvided((prevUrlState)=>{
  }
 
 const handleSubmit =(event)=>{
-  if(fileInput.value == ''){
+  if(inputValue == ''){
     alert('No Url Provided')
 }else{
-        button.innerText="Downloading..."
+  
         event.preventDefault();
-    fetchFile(fileInput.value);
-}
+    fetchFile(inputValue);
+handleFileDownload()
 
 }
 
+}
+const handleFileDownload = ()=>{
+setBtnTxt("Downloading...")
+
+}
+
+
+const handleOnChange = (event)=>{
+setInputValue(event.target.value)
+}
 const fetchFile = (url)=>{
   //fetching file and returning response as blob
   fetch(url).then(res=>res.blob()).then(file=>{
@@ -40,15 +51,14 @@ const fetchFile = (url)=>{
       aTag.click();
       aTag.remove();// Remove a Tag after file download
       URL.revokeObjectURL(tempURL)//Removing temp URL after file download
-      button.innerText("Downloading ...");
-  }).catch(
-()=>{
-  
-button.innerText="Download File";
-  alert("Failed to Download The File");
-}
 
-  );
+      setTimeout(()=>{
+        setBtnTxt("Download File")
+        setInputValue("")
+        alert("Donwload Completed")
+
+      },2000)
+  }).catch(console.log("Error occured"));
 
 
 };
@@ -56,8 +66,8 @@ button.innerText="Download File";
   return (
     <div>
     <form action="#" onSubmit={handleSubmit} >
-    <input onClick={handleChange}  type="url" name="" id="" placeholder="Paste Url Here.."/>
-    { urlProvided && <button type="submit">Download File</button> }
+    <input onChange={handleOnChange} onClick={handleChange} value={inputValue} type="url" name="" id="" placeholder="Paste Url Here.."/>
+    { urlProvided && <button type="submit"> {btnText} </button> }
     </form>
     </div>
   )
